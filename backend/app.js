@@ -1,3 +1,4 @@
+// https://note-app07.netlify.app
 const dotenv = require('dotenv');
 const cors = require('cors');
 dotenv.config();
@@ -6,7 +7,7 @@ const createRouter = require('./routes/create-note');
 const userRouter = require('./routes/user.router');
 const app = express();
 app.use(cors({
-  origin : 'https://note-app07.netlify.app',
+  origin : 'http://localhost:5173',
   credentials : true
 }));
 const connectDB = require('./db/db');
