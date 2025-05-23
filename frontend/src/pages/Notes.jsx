@@ -10,6 +10,7 @@ const Notes = () => {
     const [notes, setNotes] = useState([]);
     const [newNote, setNewNote] = useState({ title: '', content: '', category: '' });
     const [loading, setLoading] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState('');
     const [deleteMessage, setDeleteMessage] = useState('');
     const [showForm, setShowForm] = useState(false);
@@ -58,6 +59,7 @@ const Notes = () => {
     }, []);
   
     const deleteNote = async (noteId) => {
+      setIsDeleting(true);
         try {
           const token = localStorage.getItem('token');
           if (!token) {
@@ -71,7 +73,7 @@ const Notes = () => {
           }
         });
 
-        console.log("singleNote", singleNote);
+      
         
         if (singleNote.status !== 200) {
             setError('Error fetching note');
@@ -86,6 +88,7 @@ const Notes = () => {
              alert('Error deleting note');
              return;
           }
+          setIsDeleting(false);
   
            setDeleteMessage('Note deleted successfully');
           // Update the notes state to remove the deleted note
@@ -104,6 +107,7 @@ const Notes = () => {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+      setLoading(true);
       try {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -121,7 +125,7 @@ const Notes = () => {
         );
   
       
-        
+        setLoading(false);
         setNotes([response.data ,...notes]);
         setNewNote({ title: '', content: '', category: '' });
         setShowForm(false);
@@ -334,7 +338,7 @@ const Notes = () => {
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Create Note
+                 {loading ? 'creating...' : 'Create Note'}
                 </button>
               </div>
             </form>
@@ -388,7 +392,7 @@ const Notes = () => {
                     onClick={() => deleteNote(note._id)}
                     className="px-3 py-1 text-sm text-red-600 hover:text-red-900 transition-colors"
                   >
-                    Delete
+                   {isDeleting ? 'Deleting...' : 'Delete'}
                   </motion.button>
                 </div>
               </motion.div>

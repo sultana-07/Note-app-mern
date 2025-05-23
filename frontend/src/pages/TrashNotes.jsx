@@ -1,11 +1,13 @@
 import React ,{useEffect}from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { motion ,AnimatePresence} from 'framer-motion';
 
 
 const TrashNotes = () => {
     const [notes, setNotes] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
+    const [deleteMessage, setDeleteMessage] = React.useState('');
     const [error, setError] = React.useState('');
     const navigate = useNavigate();
 
@@ -39,6 +41,7 @@ const TrashNotes = () => {
     
 
    const deleteNote = async (id) => {
+       
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -50,7 +53,12 @@ const TrashNotes = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+              setDeleteMessage('Note deleted successfully');
             setNotes(notes.filter(note => note._id !== id));
+            setTimeout(() => {
+                setDeleteMessage('');
+            }, 3000);
+           
         } catch (err) {
             setError('Failed to delete note');
         }
@@ -75,7 +83,11 @@ const TrashNotes = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
+            setDeleteMessage('Note restored successfully');
             setNotes(notes.filter(note => note._id !== id));
+            setTimeout(() => {
+                setDeleteMessage('');
+            }, 3000);
 
         }
         catch (err) {
@@ -92,6 +104,23 @@ const TrashNotes = () => {
            <h1 className='text-3xl text-center font-bold '>Trash Notes</h1>
         <p className='text-center '>All your deleted notes will be here</p>
        </div>
+   
+        <AnimatePresence>
+            
+         {deleteMessage && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-lg z-50 flex items-center"
+            >
+              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+              </svg>
+              <span>{deleteMessage}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       {notes.length === 0 &&  
         <div className='flex justify-center items-center h-full'>

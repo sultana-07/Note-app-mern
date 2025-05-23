@@ -143,7 +143,7 @@ const SingleNotePage = () => {
   return (
     <>
      <div className='w-full h-screen  '> 
-        <nav className='w-full h-16 bg-white flex items-center border-b-2 border-b-gray-500 p-2 justify-between'>
+        <nav className='w-full h-16 bg-white flex items-center border-b-1 border-b-gray-500 p-2 justify-between'>
             <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Note App</h1>
             </div>
@@ -227,9 +227,9 @@ const SingleNotePage = () => {
 
         <div className='w-full p-2 mt-3 flex justify-between border-b-2 border-gray-400'>
             <h2 className='text-2xl font-bold'>{note?.title}</h2>
-            <p 
+            <span 
            
-            className="px-2 py-1 text-xs font-semibold rounded-full capitalize bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800">{note?.category}</p>
+            className="px-2 py-1  text-xs font-semibold rounded-full capitalize bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800">{note?.category}</span>
         </div>
 
         <div id='contentBox' className=' w-full p-2 mt-3 '>
@@ -243,7 +243,7 @@ const SingleNotePage = () => {
          <textarea 
          onChange={(e) => setNote({...note, content: e.target.value})}
          value={note?.content}
-         className='focus w-full whitespace-pre-wrap h-screen row-end-13 p-2 border-2 border-gray-400 rounded-lg'
+         className=' focus-within: w-full outline-none whitespace-pre-wrap h-screen row-end-13 p-2 border-2 border-gray-400 rounded-lg'
          >{note?.content}</textarea>
         </div>
      </div>
