@@ -56,6 +56,33 @@ const TrashNotes = () => {
         }
     }
 
+    const restoreNote = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+            const singlenote = await axios.get(`${import.meta.env.VITE_BASEURL}/note/get/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const note = singlenote.data;
+            await axios.put(`${import.meta.env.VITE_BASEURL}/note/restore/${id}`,
+                note, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotes(notes.filter(note => note._id !== id));
+
+        }
+        catch (err) {
+            setError('Failed to restore note');
+        }
+    }
+
  
     
   return (
@@ -90,7 +117,9 @@ const TrashNotes = () => {
                </div>
                 <p className='mt-2 ml-1'>{note.content.slice(0,90)}...</p>
                 <div className='w-full mt-3 flex justify-between'>
-                    <button className='bg-green-500 text-white px-2 py-1 rounded-lg'>Restore</button>
+                    <button
+                    onClick={() => restoreNote(note._id)}
+                    className='bg-green-500 text-white px-2 py-1 rounded-lg'>Restore</button>
                     <button
                     onClick={() => deleteNote(note._id)}
                     className='bg-red-500 text-white px-4 py-2 rounded-lg'>Delete</button>

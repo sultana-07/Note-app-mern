@@ -30,5 +30,6 @@ router.get("/getall",  authMiddleware.authUser, noteController.getAllNotes);
 
 router.get("/gettrash", authMiddleware.authUser, noteController.getTrashNotes);
 router.delete("/gettrash/:id", authMiddleware.authUser, noteController.deleteTrashNote);
+router.put("/restore/:id", authMiddleware.authUser, noteController.restoreTrashNote);
 
  module.exports = router;

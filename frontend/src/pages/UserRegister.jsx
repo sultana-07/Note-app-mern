@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const UserRegister = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,6 +21,7 @@ const UserRegister = () => {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     setError('');
 
@@ -47,7 +49,9 @@ const UserRegister = () => {
 
       // Store token in localStorage
     
-      navigate('/login'); // Redirect to notes page after successful registration
+      navigate('/login');
+      setIsLoading(false) 
+      // Redirect to notes page after successful registration
     } catch (err) {
       setError(err.message);
     }
@@ -136,7 +140,7 @@ const UserRegister = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Register
+              {isLoading ? "Loading..." : "Register"}
             </button>
           </div>
         </form>

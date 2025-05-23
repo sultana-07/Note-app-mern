@@ -12,7 +12,7 @@ module.exports.createNote = async (req, res) => {
     }
     const userId = req.user.id; // Assuming you have authentication middleware that adds user to req
     const { title, content,category } = req.body;
-    console.log("this is the userId", userId);
+   
     
 
     try {
@@ -28,7 +28,7 @@ module.exports.getAllNotes = async (req, res) => {
         // Get user ID from authenticated request
         const userId = req.user.id; // Assuming you have authentication middleware that adds user to req
 
-        console.log("this is the userId", userId);
+     
 
         // Find all notes that belong to the user
         const notes = await Note.find({ userId: userId, trashNote: false });
@@ -99,7 +99,7 @@ module.exports.getTrashNotes = async (req, res) => {
         // Get user ID from authenticated request
         const userId = req.user.id; // Assuming you have authentication middleware that adds user to req
 
-        console.log("this is the userId", userId);
+     
 
         // Find all notes that belong to the user
         const notes = await Note.find({ userId: userId, trashNote: true });
@@ -127,6 +127,27 @@ module.exports.deleteTrashNote = async (req, res) => {
       
       
         return res.status(200).json({ message: "Note deleted successfully" });
+    }catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports.restoreTrashNote = async (req, res) => {
+    const noteId = req.params.id;
+  
+
+    try {
+        const findNote = await Note.findByIdAndUpdate(noteId, { trashNote: false }, { new: true });
+
+      
+       
+        
+        if (!findNote) {
+            return res.status(404).json({ message: "Note not found" });
+        }
+      
+       
+        return res.status(200).json({ message: "Note restore successfully" });
     }catch (error) {
         return res.status(500).json({ error: error.message });
     }
