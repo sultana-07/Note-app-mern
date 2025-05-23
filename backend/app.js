@@ -7,7 +7,7 @@ const createRouter = require('./routes/create-note');
 const userRouter = require('./routes/user.router');
 const app = express();
 app.use(cors({
-  origin : ' https://note-app07.netlify.app',
+  origin : 'https://note-app07.netlify.app',
   credentials : true
 }));
 const connectDB = require('./db/db');
